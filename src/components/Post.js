@@ -11,6 +11,9 @@ const Post = ({ postObj, isOwner }) => {
   const [newPostPrice, setNewPostPrice] = useState(postObj.price);
   const [newPostPayment, setNewPostPayment] = useState(postObj.payment);
 
+  const [tag, setTag] = useState("");
+  const [newTags, setNewTags] = useState(postObj.tags);
+
   const onDeleteClick = async () => {
     const deleteOk = window.confirm(
       "Are you sure you want to delete this hwit"
@@ -29,6 +32,7 @@ const Post = ({ postObj, isOwner }) => {
       text: newPostText,
       price: newPostPrice,
       payment: newPostPayment,
+      tags: newTags,
     });
     setEditing(false);
   };
@@ -49,6 +53,24 @@ const Post = ({ postObj, isOwner }) => {
       target: { value },
     } = e;
     setNewPostPayment(value);
+  };
+  // 태그기능 수정..
+  const onTagChange = (e) => {
+    const {
+      target: { value },
+    } = e;
+    setTag(value);
+  };
+  const onSubmitTag = (e) => {
+    e.preventDefault();
+    const newTag = newTags.concat(tag);
+    setNewTags(newTag);
+    setTag("");
+  };
+  const onTagClick = (e) => {
+    const clickedTag = e.target.innerText.slice(1);
+    const filteredTags = newTags.filter((t) => t !== clickedTag);
+    setNewTags(filteredTags);
   };
 
   return (
@@ -82,6 +104,15 @@ const Post = ({ postObj, isOwner }) => {
             />
             <input type="submit" value="Update post!" />
           </form>
+          <form onSubmit={onSubmitTag}>
+            <input type="text" value={tag} onChange={onTagChange} />
+            <button type="submit">태그 수정</button>
+          </form>
+          {newTags.map((tag) => (
+            <span key={tag} onClick={onTagClick}>
+              #{tag}
+            </span>
+          ))}
           <button onClick={toggleEditing}>Cancel</button>
         </div>
       ) : (
@@ -89,6 +120,12 @@ const Post = ({ postObj, isOwner }) => {
           <h4>{postObj.text}</h4>
           <h4>{postObj.price}원</h4>
           <h4>{postObj.payment} 로 결제</h4>
+          {postObj.tags?.map((tag) => (
+            <p key={tag} style={{ display: "flex" }}>
+              #{tag}
+            </p>
+          ))}
+
           {postObj.attachmentUrl && (
             <img src={postObj.attachmentUrl} alt="Image_Here" />
           )}
