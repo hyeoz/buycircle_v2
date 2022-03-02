@@ -8,7 +8,7 @@ import { v4 } from "uuid";
 
 const PostFactory = ({ userObj }) => {
   const [post, setPost] = useState("");
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState(0);
   const [payment, setPayment] = useState("");
   const [attachment, setAttachment] = useState("");
   const [tag, setTag] = useState("");
@@ -74,7 +74,7 @@ const PostFactory = ({ userObj }) => {
     };
     await addDoc(collection(dbService, "buycircle"), postObj);
     setPost("");
-    setPrice();
+    setPrice(0);
     setPayment("");
     setAttachment("");
     setTags([]);
@@ -128,12 +128,6 @@ const PostFactory = ({ userObj }) => {
           <span>AddPhotos</span>
           <FontAwesomeIcon icon={faPlus} />
         </label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={onFileChange}
-          style={{ opacity: 0 }}
-        />
         {attachment && (
           <div>
             <img
@@ -147,7 +141,15 @@ const PostFactory = ({ userObj }) => {
             </div>
           </div>
         )}
-        <input type="submit" value="Upload Image" />
+        {/* <input type="submit" value="Upload Image" /> */}
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={onFileChange}
+          // style={{ opacity: 0 }}
+          value={attachment}
+        />
       </form>
       {/* 태스박스 부분 */}
       <form onSubmit={onSubmitTag}>
