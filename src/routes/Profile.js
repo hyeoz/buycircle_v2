@@ -74,6 +74,7 @@ const Profile = ({ refreshUser, userObj }) => {
         orderBy("createAt", "desc")
       )
     );
+    // 여기 부분도 useState 사용해서 활용
   };
 
   // console.log(userObj, "Profile");
@@ -89,7 +90,7 @@ const Profile = ({ refreshUser, userObj }) => {
           userUid: userObj.uid,
         };
         // if (userObj.uid)
-        // addDoc(collection(dbService, "userInfo"), userInfoObj);
+        addDoc(collection(dbService, "userInfo"), userInfoObj);
       }
       const userQuery = await getDocs(collection(dbService, "userInfo"));
       // console.log(userQuery.docs);
