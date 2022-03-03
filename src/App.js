@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AppRouter from "./components/Router";
-import { authService } from "./fbase";
+import { authService, dbService } from "./fbase";
 import { HashRouter } from "react-router-dom";
 import { onAuthStateChanged, updateProfile } from "@firebase/auth";
 

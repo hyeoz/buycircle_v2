@@ -1,5 +1,6 @@
 import { signOut, updateProfile } from "@firebase/auth";
 import {
+  addDoc,
   collection,
   getDocs,
   orderBy,
@@ -18,6 +19,8 @@ const Profile = ({ refreshUser, userObj }) => {
   const navigate = useNavigate();
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
   const [newPhotoURL, setNewPhotoURL] = useState(userObj.photoURL);
+  const [query, setQuery] = useState();
+
   const onLogOutClick = () => {
     signOut(authService);
     navigate("/");
@@ -71,10 +74,28 @@ const Profile = ({ refreshUser, userObj }) => {
         orderBy("createAt", "desc")
       )
     );
+    // 여기 부분도 useState 사용해서 활용
   };
+
+  // console.log(userObj, "Profile");
 
   useEffect(() => {
     getMyPosts();
+
+    (async () => {
+      if (userObj) {
+        const userInfoObj = {
+          userDisplay: userObj.displayName,
+          userPhotoURL: userObj.photoURL,
+          userUid: userObj.uid,
+        };
+        // if (userObj.uid)
+        addDoc(collection(dbService, "userInfo"), userInfoObj);
+      }
+      const userQuery = await getDocs(collection(dbService, "userInfo"));
+      // console.log(userQuery.docs);
+      setQuery(userQuery.docs);
+    })();
   }, []);
 
   return (
@@ -95,11 +116,20 @@ const Profile = ({ refreshUser, userObj }) => {
           type="file"
           accept="image/*"
           onChange={onFileChange}
-          style={{ opacity: 0 }}
+          // style={{ opacity: 0 }}
         />
         <input type="submit" value="Update Profile" />
       </form>
       <span onClick={onLogOutClick}>Log Out</span>
+      <div>
+        {/* 다른 유저 프로필사진 */}
+        {query?.slice(0, 3).map((doc) => (
+          <img
+            style={{ display: "inline", width: "100px" }}
+            src={doc.data().userPhotoURL}
+          />
+        ))}
+      </div>
     </div>
   );
 };

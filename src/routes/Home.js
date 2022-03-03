@@ -20,7 +20,7 @@ const Home = ({ userObj }) => {
       }
     );
   }, []);
-  // console.log(posts, "Home");
+  // console.log(userObj, "Home");
 
   // 스크롤
   const [datas, setDatas] = useState([]);
@@ -42,7 +42,7 @@ const Home = ({ userObj }) => {
       scrollTop + clientHeight >= scrollHeight &&
       scrollOptions < posts.length
     ) {
-      console.log("들어오나여", scrollOptions);
+      // console.log("들어오나여", scrollOptions);
       setScrollOptions(scrollOptions + 5);
       // console.log(posts.length);
     }

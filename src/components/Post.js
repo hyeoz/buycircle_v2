@@ -1,9 +1,10 @@
 import { deleteDoc, doc, updateDoc } from "@firebase/firestore";
-import { deleteObject, ref } from "@firebase/storage";
+import { deleteObject, getDownloadURL, ref } from "@firebase/storage";
 import { faPencilAlt, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dbService, storageService } from "../fbase";
 import React, { useState } from "react";
+import axios from "axios";
 
 const Post = ({ postObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
@@ -13,6 +14,8 @@ const Post = ({ postObj, isOwner }) => {
 
   const [tag, setTag] = useState("");
   const [newTags, setNewTags] = useState(postObj.tags);
+
+  // console.log(postObj);
 
   const onDeleteClick = async () => {
     const deleteOk = window.confirm(
@@ -73,6 +76,18 @@ const Post = ({ postObj, isOwner }) => {
     setNewTags(filteredTags);
   };
 
+  // resizing 이슈....
+  // let resizedImg;
+  // if (postObj.attachmentUrl) {
+  //   resizedImg =
+  //     postObj.attachmentUrl.substring(
+  //       0,
+  //       postObj.attachmentUrl.indexOf("?alt")
+  //     ) +
+  //     "_400x400" +
+  //     postObj.attachmentUrl.substring(postObj.attachmentUrl.indexOf("?alt"));
+  // }
+
   return (
     <div>
       {editing ? (
@@ -127,8 +142,13 @@ const Post = ({ postObj, isOwner }) => {
           ))}
 
           {postObj.attachmentUrl && (
-            <img src={postObj.attachmentUrl} alt="Image_Here" />
+            <img
+              style={{ maxHeight: "400px", maxWidth: "400px" }}
+              src={postObj.attachmentUrl}
+              alt="Refresh_For_Resized_Image"
+            />
           )}
+
           {isOwner && (
             <div>
               <button onClick={onDeleteClick}>
