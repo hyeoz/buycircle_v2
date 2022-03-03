@@ -57,11 +57,12 @@ const PostFactory = ({ userObj }) => {
     }
     e.preventDefault();
     let attachmentUrl = ""; // if 문 밖에서도 사용하기 위해
+    // let resizedImg = "";
     if (attachment !== "") {
       const fileRef = ref(storageService, `${userObj.uid}/${v4()}`);
       const response = await uploadString(fileRef, attachment, "data_url");
       attachmentUrl = await getDownloadURL(response.ref);
-      // console.log("-----");
+      // console.log(fileRef, response.ref, attachmentUrl, userObj.uid);
     }
     const postObj = {
       text: post,
@@ -70,8 +71,9 @@ const PostFactory = ({ userObj }) => {
       tags: tags,
       createAt: Date.now(),
       creatorId: userObj.uid,
-      attachmentUrl,
+      attachmentUrl: attachmentUrl,
     };
+    // console.log(resizedImg);
     await addDoc(collection(dbService, "buycircle"), postObj);
     setPost("");
     setPrice(0);
@@ -148,7 +150,7 @@ const PostFactory = ({ userObj }) => {
           accept="image/*"
           onChange={onFileChange}
           // style={{ opacity: 0 }}
-          value={attachment}
+          defaultValue={attachment}
         />
       </form>
       {/* 태스박스 부분 */}
