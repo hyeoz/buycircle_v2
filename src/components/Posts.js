@@ -5,6 +5,43 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { dbService, storageService } from "../fbase";
 import React, { useState } from "react";
 import { v4 } from "uuid";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  font-family: "Gothic A1", sans-serif;
+  /* border-bottom: 3px dotted #ffaa66; */
+
+  p {
+    margin: 0;
+  }
+  .fill_space {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-bottom: 10px;
+    &:last-child {
+      border-bottom: 5px double #fce5cd;
+    }
+  }
+  .fill_item {
+    margin-bottom: 10px;
+    justify-content: space-between;
+    display: flex;
+    input {
+      width: 15rem;
+    }
+    button {
+      width: 35%;
+    }
+  }
+  .click_space {
+    background-color: #fce5cd;
+    border-color: #fce5cd;
+    border-radius: 0.5rem;
+    &:hover {
+      background-color: #f9cb9c;
+    }
+  }
+`;
 
 const PostFactory = ({ userObj }) => {
   const [post, setPost] = useState("");
@@ -52,10 +89,11 @@ const PostFactory = ({ userObj }) => {
     setAttachment("");
   };
   const onSubmit = async (e) => {
+    e.preventDefault();
+
     if (post === "") {
       return;
     }
-    e.preventDefault();
     let attachmentUrl = ""; // if 문 밖에서도 사용하기 위해
     // let resizedImg = "";
     if (attachment !== "") {
@@ -102,68 +140,89 @@ const PostFactory = ({ userObj }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <div>
-          <input
-            type="text"
-            placeholder="What do you buy?"
-            maxLength={128}
-            value={post}
-            onChange={onPostChange}
-          />
-          <input
-            type="number"
-            placeholder="How much is that?"
-            onChange={onPriceChange}
-            value={price}
-          />
-          <input
-            type="text"
-            placeholder="How do you pay for that?"
-            onChange={onPaymentChange}
-            value={payment}
-          />
-          <input type="submit" value="&rarr;" />
-        </div>
-        <label htmlFor="attach-file">
-          <span>AddPhotos</span>
-          <FontAwesomeIcon icon={faPlus} />
-        </label>
-        {attachment && (
-          <div>
-            <img
-              src={attachment}
-              style={{ backgroundImage: attachment }}
-              alt="image_here"
-            />
-            <div onClick={onClearAttachment}>
-              <span>Remove</span>
-              <FontAwesomeIcon icon={faTimes} />
+    <Wrapper>
+      <div>
+        <form onSubmit={onSubmit}>
+          <div className="fill_space">
+            <div className="fill_item">
+              <p>Share What You Buy!</p>
+              <input
+                type="text"
+                placeholder="What do you buy?"
+                maxLength={128}
+                value={post}
+                onChange={onPostChange}
+              />
             </div>
+            <div className="fill_item">
+              <p>It Costs</p>
+              <input
+                type="number"
+                placeholder="How much is that?"
+                onChange={onPriceChange}
+                value={price}
+              />
+            </div>
+            <div className="fill_item">
+              <p>Paying By</p>
+              <input
+                type="text"
+                placeholder="How do you pay for that?"
+                onChange={onPaymentChange}
+                value={payment}
+                style={{ display: "flex" }}
+              />
+            </div>
+            <input type="submit" value="&rarr;" className="click_space" />
           </div>
-        )}
-        {/* <input type="submit" value="Upload Image" /> */}
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={onFileChange}
-          // style={{ opacity: 0 }}
-          defaultValue={attachment}
-        />
-      </form>
-      {/* 태스박스 부분 */}
-      <form onSubmit={onSubmitTag}>
-        <input type="text" value={tag} onChange={onTagChange} />
-        <button type="submit">태그 추가</button>
-      </form>
-      {tags.map((tag) => (
-        <span key={tag} onClick={onTagClick}>
-          #{tag}
-        </span>
-      ))}
-    </div>
+        </form>
+        {/* 태스박스 부분 */}
+        <div className="fill_space">
+          <form onSubmit={onSubmitTag} className="fill_item">
+            <input type="text" value={tag} onChange={onTagChange} />
+            <button type="submit" className="click_space">
+              Add Tags
+            </button>
+          </form>
+          <div style={{ display: "flex", color: "#FFAA66" }}>
+            {tags.map((tag) => (
+              <span key={tag} onClick={onTagClick}>
+                #{tag}
+              </span>
+            ))}
+          </div>
+          <label htmlFor="attach-file" className="fill_item">
+            <span>Add Photos Here!</span>
+            <FontAwesomeIcon icon={faPlus} />
+          </label>
+          {attachment && (
+            <div>
+              <img
+                src={attachment}
+                style={{
+                  backgroundImage: attachment,
+                  maxWidth: "100px",
+                  maxHeight: "100px",
+                }}
+                alt="image_here"
+              />
+              <div onClick={onClearAttachment}>
+                <span>Remove</span>
+                <FontAwesomeIcon icon={faTimes} />
+              </div>
+            </div>
+          )}
+          {/* <input type="submit" value="Upload Image" /> */}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={onFileChange}
+            style={{ opacity: 0 }}
+            defaultValue={attachment}
+          />
+        </div>
+      </div>
+    </Wrapper>
   );
 };
 
