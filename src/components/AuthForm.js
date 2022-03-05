@@ -4,6 +4,31 @@ import {
 } from "@firebase/auth";
 import { authService } from "../fbase";
 import React, { useState } from "react";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  /* border: 1px solid red; */
+  margin-bottom: 10px;
+  .container {
+    display: grid;
+    grid-template-columns: 1fr;
+    input {
+      margin-bottom: 10px;
+    }
+  }
+  .click_space {
+    background-color: #fce5cd;
+    border-color: #fce5cd;
+    border-radius: 0.5rem;
+    margin-bottom: 10px;
+    &:hover {
+      background-color: #f9cb9c;
+    }
+  }
+  span {
+    color: #2986cc;
+  }
+`;
 
 const AuthForm = () => {
   const [email, setEmail] = useState("");
@@ -48,7 +73,7 @@ const AuthForm = () => {
   // create account, sign in 버튼을 반대로 바꿔주는 함수
   const toggleAccount = () => setNewAccount((prev) => !prev);
   return (
-    <div>
+    <Wrapper>
       <form onSubmit={onSubmit} className="container">
         <input
           name="email"
@@ -71,14 +96,14 @@ const AuthForm = () => {
         <input
           type="submit"
           value={newAccount ? "Create Account" : "Sign In"}
-          className="authInput authSubmit"
+          className="click_space"
         />
         {errorMsg && <span className="authError">{errorMsg}</span>}
       </form>
-      <span onClick={toggleAccount} className="authSwitch">
-        {newAccount ? "Sign In" : "Create Account"}
+      <span onClick={toggleAccount}>
+        {newAccount ? "🔁 Log In" : "🔁 Create Account"}
       </span>
-    </div>
+    </Wrapper>
   );
 };
 

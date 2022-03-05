@@ -49,7 +49,9 @@ function App() {
       ) : (
         "Initializing..."
       )}
-      <footer>&copy; BUYCIRCLE {new Date().getFullYear()}</footer>
+      <footer style={{ textAlign: "center", marginTop: "10px" }}>
+        &copy; BUYCIRCLE {new Date().getFullYear()}
+      </footer>
     </HashRouter>
   );
 }

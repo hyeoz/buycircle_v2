@@ -3,15 +3,30 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "@firebase/auth";
-import {
-  faGithub,
-  faGoogle,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
+import { faGithub, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AuthForm from "../components/AuthForm";
 import { authService } from "../fbase";
 import React from "react";
+import { faCommentsDollar } from "@fortawesome/free-solid-svg-icons";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  text-align: center;
+  .click_space {
+    background-color: #fce5cd;
+    border-color: #fce5cd;
+    border-radius: 0.5rem;
+    &:hover {
+      background-color: #f9cb9c;
+    }
+  }
+  .social_space {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+  }
+`;
 
 const Auth = () => {
   const onSocialClick = async (e) => {
@@ -30,23 +45,23 @@ const Auth = () => {
   };
 
   return (
-    <div className="authContainer">
+    <Wrapper>
       <FontAwesomeIcon
-        icon={faTwitter}
-        color={"#04AAFF"}
-        size="3x"
-        style={{ marginBottom: 30 }}
+        icon={faCommentsDollar}
+        size="4x"
+        color="#FFAA66"
+        style={{ marginBottom: "10px" }}
       />
       <AuthForm />
-      <div className="authBtns">
-        <button name="google" onClick={onSocialClick} className="authBtn">
+      <div className="social_space">
+        <button name="google" onClick={onSocialClick} className="click_space">
           Continue With Google <FontAwesomeIcon icon={faGoogle} />
         </button>
-        <button name="github" onClick={onSocialClick} className="authBtn">
+        <button name="github" onClick={onSocialClick} className="click_space">
           Continue With Github <FontAwesomeIcon icon={faGithub} />
         </button>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 export default Auth;
