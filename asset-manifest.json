@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/buycircle/static/js/main.2b4d1f3b.js",
-    "index.html": "/buycircle/index.html",
-    "main.2b4d1f3b.js.map": "/buycircle/static/js/main.2b4d1f3b.js.map"
+    "main.js": "/buycircle_v2/static/js/main.a9d39487.js",
+    "index.html": "/buycircle_v2/index.html",
+    "main.a9d39487.js.map": "/buycircle_v2/static/js/main.a9d39487.js.map"
   },
   "entrypoints": [
-    "static/js/main.2b4d1f3b.js"
+    "static/js/main.a9d39487.js"
   ]
 }
